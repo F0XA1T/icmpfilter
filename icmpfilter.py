@@ -9,10 +9,12 @@ import argparse
 parse = argparse.ArgumentParser()
 parse.add_argument("-i", "--iface", dest = "interface", type = str, help = "interface name, example: wlan0, eth0")
 parse.add_argument("-q", "--queue-num", dest = "queuenum", type = int, help = "queue number, example: 0, 1, 2")
+parse.add_argument("-x", "--xterm", action = "store_true", help = "run program in xterm terminal")
 args = vars(parse.parse_args())
 
 interface = args["interface"]
 queuenum = args["queuenum"]
+xterm = args["xterm"]
 
 def getip(iface):
     ifconfig = subprocess.check_output("ifconfig " + iface, shell = True).decode()
@@ -38,6 +40,9 @@ def icmpfilter(pack):
 
 
 def main():
+    if xterm:
+        os.system("xterm -e python3 {0} --iface {1} --queue-num {2}".format(sys.argv[0], interface, str(queuenum)))
+        sys.exit()
     print(u"\u001b[33m[INFO]\u001b[0m RUNING ON \u001b[32;1m{0}\u001b[0m INTERFACE AND \u001b[32;1m{1}\u001b[0m QUEUE NUMBER\n".format(interface.upper(), str(queuenum)))
     os.system("iptables -I INPUT -j NFQUEUE --queue-num " + str(queuenum))
 
@@ -55,5 +60,5 @@ def main():
     sys.exit(3)
 
 
-
-main()
+if __name__ == "__main__":
+    main()
