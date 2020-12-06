@@ -33,8 +33,6 @@ def icmpfilter(pack):
         print(u"\u001b[33m[DROP]\u001b[0m ICMP PING FROM \u001b[37;1m{0}\u001b[0m DROPPED".format(scpack[IP].src))
 
     else:
-        pack.set_payload(bytes(scpack))
-
         pack.accept()
 
 
