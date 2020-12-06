@@ -31,9 +31,9 @@ def icmpfilter(pack):
     if scpack.haslayer(ICMP) and scpack[ICMP].type == 8 and scpack[IP].dst == ip:
         pack.drop()
         print(u"\u001b[33m[DROP]\u001b[0m ICMP PING FROM \u001b[37;1m{0}\u001b[0m DROPPED".format(scpack[IP].src))
+        return
 
-    else:
-        pack.accept()
+    pack.accept()
 
 
 
